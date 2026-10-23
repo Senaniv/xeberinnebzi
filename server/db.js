@@ -288,7 +288,7 @@ class InMemoryStore {
           return self.reactions.filter(r => r.article_id === artId);
         }
 
-        if (s.includes('from comments')) {
+        if (s.includes('from comments') && !s.includes('from articles')) {
           if (params.length > 0 && typeof params[0] === 'number') {
             return self.comments.filter(c => c.article_id === params[0] && c.status === 'approved');
           }
@@ -517,56 +517,20 @@ class InMemoryStore {
   }
 }
 
-// Initialize database engine (SQLite with fallback to InMemory)
-function createDatabase() {
-  if (isVercel) {
-    // On Vercel, always use the resilient in-memory store to avoid Lambda native compilation issues
-    console.log('[Database] Running in Vercel environment: using In-Memory Store');
-    return new InMemoryStore();
-  }
-
-  try {
-    // Try to load better-sqlite3 locally
-    const Database = (await_import('better-sqlite3'))?.default || null;
-    if (Database) {
-      const dbPath = path.join(__dirname, 'database.sqlite');
-      const instance = new Database(dbPath);
-      instance.pragma('journal_mode = WAL');
-      instance.pragma('foreign_keys = ON');
-      console.log('[Database] SQLite connected successfully at:', dbPath);
-      return instance;
-    }
-  } catch (err) {
-    console.warn('[Database] better-sqlite3 not available, falling back to In-Memory store:', err.message);
-  }
-
-  return new InMemoryStore();
-}
-
-// Synchronous wrapper helper for import
-function await_import(pkg) {
-  try {
-    // Using require syntax if available or fall back
-    import('better-sqlite3');
-  } catch (e) {
-    return null;
-  }
-}
-
 // In Node ES module top-level:
-try {
-  if (isVercel) {
-    db = new InMemoryStore();
-  } else {
-    const { default: Database } = await import('better-sqlite3');
+if (isVercel) {
+  db = new InMemoryStore();
+} else {
+  try {
+    const pkg = ['better', 'sqlite3'].join('-');
+    const { default: Database } = await import(pkg);
     const dbPath = path.join(__dirname, 'database.sqlite');
     db = new Database(dbPath);
     db.pragma('journal_mode = WAL');
     db.pragma('foreign_keys = ON');
+  } catch (err) {
+    db = new InMemoryStore();
   }
-} catch (err) {
-  console.warn('[Database] Falling back to InMemoryStore:', err.message);
-  db = new InMemoryStore();
 }
 
 export function initDatabase() {

@@ -17,21 +17,26 @@ import statsRoutes from './routes/stats.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Initialize SQLite database
+// Initialize database
 initDatabase();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const isVercel = Boolean(process.env.VERCEL);
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Ensure uploads folder exists
-const uploadsDir = path.join(__dirname, '..', 'public', 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
+// Ensure uploads folder exists safely (support read-only Vercel serverless)
+const uploadsDir = isVercel ? '/tmp/uploads' : path.join(__dirname, '..', 'public', 'uploads');
+try {
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  }
+} catch (err) {
+  // Ignored in read-only environments
 }
 
 // Multer storage for image uploads
@@ -80,6 +85,11 @@ app.use('/api/comments', commentRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/stats', statsRoutes);
 
+// Health check endpoint for debugging
+app.get('/api/health', (req, res) => {
+  res.json({ success: true, status: 'ok', vercel: isVercel, timestamp: new Date().toISOString() });
+});
+
 // Static assets
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
@@ -93,7 +103,7 @@ app.get('/article/:idOrSlug', (req, res) => {
 });
 
 // Start Server locally (if not on Vercel)
-if (!process.env.VERCEL) {
+if (!isVercel) {
   app.listen(PORT, () => {
     console.log(`===================================================`);
     console.log(`  "Günün Nəbzi" Xəbər Portalı & Admin Paneli Aktivdir`);
