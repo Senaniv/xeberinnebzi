@@ -1,6 +1,6 @@
 # 🔴 Günün Nəbzi - Müasir Azərbaycan Xəbər Portalı və İdarəetmə Paneli (CMS)
 
-**"Günün Nəbzi"** — [Oxu.az](https://oxu.az/) və [Modern.az](https://modern.az/az/) saytlarının dərin təhlili əsasında hər iki platformanın ən güclü xüsusiyyətlərini (operativ vizual xəbər axını + dərin analitik publisistika) özündə birləşdirən tam funksional, müasir və yüksək sürətli xəbər portalıdır.
+**"Günün Nəbzi"** —  tam funksional, müasir və yüksək sürətli xəbər portalıdır.
 
 ---
 
@@ -84,24 +84,5 @@
 
 ---
 
-## 🚀 Quraşdırma və İşə Salma
-
-Layihə tam şəkildə Node.js mühitində işləyir.
-
-### 1. Serveri işə salın:
-```bash
-npm start
-```
-
-### 2. Brauzerdə daxil olun:
-* **Əsas Xəbər Portalı:** [http://localhost:3000](http://localhost:3000)
-* **Xüsusi Admin Panel:** [http://localhost:3000/admin](http://localhost:3000/admin)
-* **REST API:** [http://localhost:3000/api/news](http://localhost:3000/api/news)
 
 ---
-
-## 🗄️ Texnologiya Steki
-* **Backend:** Node.js (ES Modules), Express.js, Multer (şəkil yükləmələri)
-* **Verilənlər Bazası:** SQLite (`better-sqlite3` - yüksək sürətli WAL rejimində)
-* **Frontend:** Müasir HTML5, Tailwind CSS, FontAwesome 6, Vanilla JS (Reaktiv SPA arxitekturası)
-* **Təhlükəsizlik və Performans:** İndekslənmiş axtarış, optimallaşdırılmış sorğular, responsiv mobil dizayn.
