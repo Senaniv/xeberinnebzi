@@ -92,12 +92,16 @@ app.get('/article/:idOrSlug', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'article.html'));
 });
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`===================================================`);
-  console.log(`  "Günün Nəbzi" Xəbər Portalı & Admin Paneli Aktivdir`);
-  console.log(`  Portal:      http://localhost:${PORT}`);
-  console.log(`  Admin Panel: http://localhost:${PORT}/admin`);
-  console.log(`  API:         http://localhost:${PORT}/api/news`);
-  console.log(`===================================================`);
-});
+// Start Server locally (if not on Vercel)
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`===================================================`);
+    console.log(`  "Günün Nəbzi" Xəbər Portalı & Admin Paneli Aktivdir`);
+    console.log(`  Portal:      http://localhost:${PORT}`);
+    console.log(`  Admin Panel: http://localhost:${PORT}/admin`);
+    console.log(`  API:         http://localhost:${PORT}/api/news`);
+    console.log(`===================================================`);
+  });
+}
+
+export default app;
