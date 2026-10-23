@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="az" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Günün Nəbzi - Azərbaycanın və Dünyanın Ən Son Xəbərləri</title>
+  <meta name="description" content="Günün Nəbzi - Operativ, qərəzsiz və dəqiq 24/7 xəbər portalı. Siyasət, iqtisadiyyat, cəmiyyət, idman və analitika.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              500: '#f43f5e',
+              600: '#e11d48',
+              700: '#be123c',
+              800: '#9f1239',
+              900: '#881337',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased selection:bg-rose-600 selection:text-white">
+
+  <!-- ================= TOP INFORMATION BAR ================= -->
+  <div class="bg-slate-900 text-slate-300 text-xs py-2 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-y-2">
+      
+      <!-- Date & Clock -->
+      <div class="flex items-center gap-3">
+        <span class="flex items-center gap-1.5 text-slate-300 font-medium">
+          <i class="far fa-calendar-alt text-rose-500"></i>
+          <span id="current-az-date">23 Oktyabr 2026</span>
+        </span>
+        <span class="text-slate-600 hidden sm:inline">|</span>
+        <span class="hidden sm:flex items-center gap-1 text-slate-400 font-mono">
+          <i class="far fa-clock text-rose-500"></i>
+          <span id="current-clock">12:00:00</span>
+        </span>
+      </div>
+
+      <!-- Live Financial & Weather Tickers -->
+      <div class="flex items-center gap-4 flex-wrap text-[11px]">
+        <!-- Currencies -->
+        <div class="flex items-center gap-3">
+          <span class="flex items-center gap-1">
+            <span class="font-bold text-slate-400">$ USD:</span>
+            <span id="rate-usd" class="text-white font-mono font-semibold">1.7000</span>
+          </span>
+          <span class="flex items-center gap-1">
+            <span class="font-bold text-slate-400">€ EUR:</span>
+            <span id="rate-eur" class="text-white font-mono font-semibold">1.8480</span>
+          </span>
+          <span class="hidden md:flex items-center gap-1">
+            <span class="font-bold text-slate-400">₽ RUB:</span>
+            <span id="rate-rub" class="text-white font-mono font-semibold">0.0182</span>
+          </span>
+          <span class="hidden md:flex items-center gap-1">
+            <span class="font-bold text-amber-400"><i class="fas fa-oil-can mr-0.5"></i> Brent:</span>
+            <span id="rate-brent" class="text-white font-mono font-semibold">$84.40</span>
+          </span>
+        </div>
+
+        <span class="text-slate-700 hidden sm:inline">|</span>
+
+        <!-- Weather -->
+        <div class="flex items-center gap-1.5 text-sky-400 font-medium">
+          <i class="fas fa-sun text-amber-400"></i>
+          <span id="weather-temp">21°C</span>
+          <span id="weather-desc" class="hidden lg:inline text-slate-400 text-[10px]">(Bakı)</span>
+        </div>
+
+        <span class="text-slate-700 hidden sm:inline">|</span>
+
+        <!-- Theme Toggle Button -->
+        <button id="theme-toggle-btn" class="p-1 rounded text-slate-400 hover:text-white transition-colors" title="Gecə / Gündüz Rejimi">
+          <i class="fas fa-moon dark:hidden text-amber-400"></i>
+          <i class="fas fa-sun hidden dark:inline text-amber-400"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= MAIN HEADER & BRAND ================= -->
+  <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40 shadow-sm backdrop-blur-md bg-white/95 dark:bg-slate-900/95">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
+      
+      <!-- Mobile Menu Toggle Button -->
+      <button id="mobile-menu-toggle" class="lg:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+        <i class="fas fa-bars text-xl"></i>
+      </button>
+
+      <!-- Brand Logo -->
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 to-rose-500 flex items-center justify-center text-white shadow-md shadow-rose-600/30 group-hover:scale-105 transition-transform">
+          <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <div>
+          <div class="text-2xl font-black tracking-tight text-slate-900 dark:text-white flex items-center">
+            GÜNÜN <span class="text-rose-600 ml-1.5">NƏBZİ</span>
+          </div>
+          <div class="text-[10px] uppercase font-bold tracking-widest text-slate-600 dark:text-slate-400">
+            24/7 Operativ Xəbər Portalı
+          </div>
+        </div>
+      </a>
+
+      <!-- Search Input in Header (Instant search) -->
+      <div class="hidden md:flex flex-1 max-w-md mx-6">
+        <div class="relative w-full">
+          <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+          <input type="text" id="main-search-input" placeholder="Xəbərlərdə axtarış et..." 
+                 class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800/80 border border-transparent dark:border-slate-700/60 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white dark:focus:bg-slate-900 transition-all text-slate-800 dark:text-slate-200">
+        </div>
+      </div>
+
+      <!-- Header Action Buttons -->
+      <div class="flex items-center gap-3">
+        <!-- WhatsApp News Tip -->
+        <a href="https://wa.me/994509990011" target="_blank" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold hover:bg-emerald-500/20 transition-colors">
+          <i class="fab fa-whatsapp text-sm"></i>
+          <span>Xəbər Göndər</span>
+        </a>
+
+        <!-- Dedicated Admin Panel Pill -->
+        <a href="/admin" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white dark:bg-rose-600 dark:hover:bg-rose-700 text-xs font-bold transition-all shadow-sm">
+          <i class="fas fa-cog"></i>
+          <span>Admin Panel</span>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- ================= CATEGORY NAVIGATION BAR ================= -->
+    <nav class="border-t border-slate-100 dark:border-slate-800/60 hidden lg:block bg-white dark:bg-slate-900">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <ul id="nav-categories-list" class="flex items-center gap-1 py-1 overflow-x-auto no-scrollbar">
+          <!-- Dynamically populated categories -->
+          <li class="py-2 text-xs text-slate-400">Yüklənir...</li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ================= BREAKING NEWS BAR (SON DƏQİQƏ - OXU.AZ STYLE) ================= -->
+  <section id="breaking-news-bar" class="bg-rose-600 text-white py-2 overflow-hidden shadow-inner flex items-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center">
+      
+      <!-- Breaking Label -->
+      <div class="flex items-center gap-2 flex-shrink-0 z-10 pr-4 bg-rose-600 border-r border-rose-500">
+        <span class="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span>
+        <span class="text-xs font-black uppercase tracking-wider">SON DƏQİQƏ</span>
+      </div>
+
+      <!-- Infinite Marquee Track -->
+      <div class="overflow-hidden flex-1 relative ml-2">
+        <div id="ticker-content" class="ticker-track">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= MAIN BODY CONTENT ================= -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-8">
+
+    <!-- HERO MANŞET SECTION (Oxu.az 1 dominant + 4 sub-hero cards) -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <!-- Main Large Hero (Takes 2 cols on desktop) -->
+      <div id="main-hero-card" class="lg:col-span-2">
+        <div class="w-full h-[420px] rounded-2xl bg-slate-200 dark:bg-slate-800 shimmer animate-pulse"></div>
+      </div>
+
+      <!-- 4 Sub-Heroes (Takes 1 col on desktop in 2x2 grid) -->
+      <div id="sub-heroes-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+        <div class="h-[200px] rounded-xl bg-slate-200 dark:bg-slate-800 shimmer animate-pulse"></div>
+        <div class="h-[200px] rounded-xl bg-slate-200 dark:bg-slate-800 shimmer animate-pulse"></div>
+        <div class="h-[200px] rounded-xl bg-slate-200 dark:bg-slate-800 shimmer animate-pulse"></div>
+        <div class="h-[200px] rounded-xl bg-slate-200 dark:bg-slate-800 shimmer animate-pulse"></div>
+      </div>
+    </section>
+
+    <!-- MAIN TWO-COLUMN CONTENT GRID -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- ================= LEFT COLUMN: MAIN FEED (8 Cols) ================= -->
+      <div class="lg:col-span-8 space-y-8">
+        
+        <!-- Section Header with Filter Indicator -->
+        <div class="flex items-center justify-between pb-3 border-b-2 border-slate-200 dark:border-slate-800">
+          <div class="flex items-center gap-2.5">
+            <span class="w-2.5 h-6 bg-rose-600 rounded-sm"></span>
+            <h2 id="feed-section-title" class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              Son Xəbərlər
+            </h2>
+          </div>
+          <div class="text-xs text-slate-400 font-medium">
+            24 saat yenilənən lent
+          </div>
+        </div>
+
+        <!-- Latest News List -->
+        <div id="latest-news-stream" class="space-y-4">
+          <!-- News items loaded dynamically -->
+          <div class="py-12 text-center text-slate-400">
+            <i class="fas fa-spinner fa-spin text-2xl text-rose-600"></i>
+            <p class="mt-2 text-xs">Xəbərlər gətirilir...</p>
+          </div>
+        </div>
+
+        <!-- Load More Pagination Button -->
+        <div class="text-center pt-2">
+          <button id="load-more-btn" class="hidden px-6 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-rose-500 dark:hover:border-rose-500 font-bold text-sm text-slate-700 dark:text-slate-200 hover:text-rose-600 dark:hover:text-rose-400 shadow-sm transition-all">
+            <i class="fas fa-sync-alt mr-2"></i> Daha çox xəbər göstər
+          </button>
+        </div>
+
+        <!-- ================= ANALYTICS & INTERVIEWS (MODERN.AZ STYLE) ================= -->
+        <section class="pt-6">
+          <div class="flex items-center justify-between pb-3 mb-4 border-b-2 border-slate-200 dark:border-slate-800">
+            <div class="flex items-center gap-2.5">
+              <span class="w-2.5 h-6 bg-indigo-600 rounded-sm"></span>
+              <h2 class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                Analitika & Xüsusi Araşdırmalar
+              </h2>
+            </div>
+            <span class="text-xs text-indigo-500 font-bold uppercase tracking-wider">Ekspert Şərhləri</span>
+          </div>
+
+          <div id="analytics-section-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Loaded dynamically from analytics category -->
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ================= RIGHT COLUMN: SIDEBAR WIDGETS (4 Cols) ================= -->
+      <aside id="sidebar-content" class="lg:col-span-4 space-y-6">
+        
+        <!-- 1. POPULAR NEWS / ƏN ÇOX OXUNANLAR (OXU.AZ STYLE 1-7) -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-100 dark:border-slate-800 shadow-sm">
+          <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100 dark:border-slate-800">
+            <h3 class="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="fas fa-fire text-rose-500"></i> Ən Çox Oxunanlar
+            </h3>
+            <span class="text-[11px] font-bold text-rose-600 uppercase">Top Reytinq</span>
+          </div>
+
+          <ul id="most-read-list" class="space-y-3.5">
+            <!-- Dynamically populated -->
+          </ul>
+        </div>
+
+        <!-- 2. GÜNÜN SORĞUSU (MODERN.AZ STYLE INTERACTIVE POLL) -->
+        <div id="poll-widget-container">
+          <!-- Loaded dynamically -->
+        </div>
+
+        <!-- 3. CURRENCY CALCULATOR (VALYUTA ÇEVİRİCİ) -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-100 dark:border-slate-800 shadow-sm">
+          <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-100 dark:border-slate-800">
+            <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="fas fa-calculator text-emerald-500"></i> Valyuta Çevirici
+            </h3>
+            <span class="text-[10px] text-slate-400 font-medium">Mərkəzi Bank</span>
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-[11px] font-medium text-slate-500 mb-1">Məbləğ:</label>
+              <input type="number" id="calc-amount" value="100" min="1" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-rose-500">
+            </div>
+            <div>
+              <label class="block text-[11px] font-medium text-slate-500 mb-1">Valyuta:</label>
+              <select id="calc-currency" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-rose-500">
+                <option value="USD">ABŞ Dolları (USD)</option>
+                <option value="EUR">Avro (EUR)</option>
+                <option value="RUB">Rusiya Rublu (RUB)</option>
+              </select>
+            </div>
+            <div class="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <span class="text-xs text-slate-500 font-medium">Nəticə:</span>
+              <span id="calc-result" class="text-lg font-black text-emerald-600 dark:text-emerald-400">170.00 AZN</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. NEWSLETTER / ABUNƏLİK -->
+        <div class="bg-gradient-to-br from-rose-600 to-rose-700 text-white rounded-2xl p-5 shadow-lg">
+          <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider mb-2">
+            <i class="far fa-envelope-open"></i> E-Bülleten
+          </div>
+          <h4 class="text-lg font-bold mb-2">Günün mühüm xəbərləri birbaşa poçtunuzda!</h4>
+          <p class="text-xs text-rose-100 mb-4">Hər axşam günün ən vacib 5 hadisəsinin xülasəsini göndəririk.</p>
+          <form onsubmit="event.preventDefault(); alert('Təşəkkür edirik! Bülletenimizə uğurla abunə oldunuz.'); this.reset();" class="space-y-2">
+            <input type="email" required placeholder="E-poçt ünvanınız" class="w-full px-3 py-2 rounded-lg text-xs text-slate-900 bg-white placeholder-slate-400 focus:outline-none">
+            <button type="submit" class="w-full py-2 bg-slate-900 hover:bg-black text-white text-xs font-bold rounded-lg transition-colors">
+              Abunə Ol
+            </button>
+          </form>
+        </div>
+
+      </aside>
+
+    </div>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-900 text-slate-400 text-xs mt-12 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        
+        <!-- Brand Col -->
+        <div class="space-y-3">
+          <div class="flex items-center gap-2 text-white font-black text-xl">
+            <span class="w-3 h-3 bg-rose-600 rounded-full animate-ping"></span>
+            GÜNÜN NƏBZİ
+          </div>
+          <p class="text-slate-400 text-xs leading-relaxed">
+            Azərbaycanın və dünyanın ən mühüm, operativ və obyektiv informasiya platforması. Hər an hadisələrin mərkəzində.
+          </p>
+          <div class="flex items-center gap-3 text-slate-400 pt-2">
+            <a href="#" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-rose-600 hover:text-white transition-colors"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-rose-600 hover:text-white transition-colors"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-rose-600 hover:text-white transition-colors"><i class="fab fa-telegram-plane"></i></a>
+            <a href="#" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-rose-600 hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h4 class="text-white font-bold text-sm mb-3">Kateqoriyalar</h4>
+          <ul class="space-y-2">
+            <li><a href="javascript:void(0)" onclick="filterByCategory('siyaset')" class="hover:text-rose-400 transition-colors">Siyasət</a></li>
+            <li><a href="javascript:void(0)" onclick="filterByCategory('iqtisadiyyat')" class="hover:text-rose-400 transition-colors">İqtisadiyyat</a></li>
+            <li><a href="javascript:void(0)" onclick="filterByCategory('cemiyyet')" class="hover:text-rose-400 transition-colors">Cəmiyyət</a></li>
+            <li><a href="javascript:void(0)" onclick="filterByCategory('dunya')" class="hover:text-rose-400 transition-colors">Dünya</a></li>
+            <li><a href="javascript:void(0)" onclick="filterByCategory('idman')" class="hover:text-rose-400 transition-colors">İdman</a></li>
+          </ul>
+        </div>
+
+        <!-- Rubrics -->
+        <div>
+          <h4 class="text-white font-bold text-sm mb-3">Xüsusi Layihələr</h4>
+          <ul class="space-y-2">
+            <li><a href="javascript:void(0)" onclick="filterByCategory('analitika')" class="hover:text-rose-400 transition-colors">Analitika & Müsahibələr</a></li>
+            <li><a href="javascript:void(0)" onclick="filterByCategory('texnologiya')" class="hover:text-rose-400 transition-colors">Texnologiya & Süni İntellekt</a></li>
+            <li><a href="javascript:void(0)" onclick="filterByCategory('herbi')" class="hover:text-rose-400 transition-colors">Hərbi Xronika</a></li>
+            <li><a href="javascript:void(0)" onclick="filterByCategory('medeniyyet')" class="hover:text-rose-400 transition-colors">Mədəniyyət & İncəsənət</a></li>
+            <li><a href="/admin" class="text-rose-400 font-bold hover:underline">Redaksiya İdarəetməsi (Admin)</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact & Editorial -->
+        <div>
+          <h4 class="text-white font-bold text-sm mb-3">Redaksiya ilə Əlaqə</h4>
+          <ul class="space-y-2.5">
+            <li class="flex items-center gap-2">
+              <i class="fas fa-map-marker-alt text-rose-500"></i>
+              <span>Bakı ş., Nizami küç. 102</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-phone text-rose-500"></i>
+              <span>+994 (12) 590-00-00</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fab fa-whatsapp text-emerald-500"></i>
+              <span>+994 (50) 999-00-11</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="far fa-envelope text-rose-500"></i>
+              <span>redaksiya@gununnebzi.az</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Copyright -->
+      <div class="pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+        <div>
+          © 2026 "Günün Nəbzi" İnformasiya Agentliyi. Bütün hüquqlar qorunur.
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="#" class="hover:text-slate-400">İstifadə qaydaları</a>
+          <a href="#" class="hover:text-slate-400">Məxfilik siyasəti</a>
+          <a href="#" class="hover:text-slate-400">Reklam</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= MOBILE DRAWER MENU ================= -->
+  <div id="mobile-overlay" onclick="toggleMobileMenu()" class="fixed inset-0 bg-black/60 z-50 hidden backdrop-blur-sm transition-opacity"></div>
+  <div id="mobile-drawer" class="fixed top-0 bottom-0 left-0 w-72 bg-white dark:bg-slate-900 z-50 shadow-2xl transform -translate-x-full transition-transform duration-300 ease-in-out p-6 flex flex-col justify-between overflow-y-auto">
+    <div>
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 mb-4">
+        <div class="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-rose-600 animate-pulse"></span>
+          GÜNÜN NƏBZİ
+        </div>
+        <button onclick="toggleMobileMenu()" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-white">
+          <i class="fas fa-times text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Category List -->
+      <ul id="mobile-categories-list" class="space-y-1">
+        <!-- Dynamically rendered -->
+      </ul>
+    </div>
+
+    <div class="pt-6 border-t border-slate-100 dark:border-slate-800 space-y-3">
+      <a href="/admin" class="w-full py-2.5 px-4 bg-slate-900 dark:bg-rose-600 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow">
+        <i class="fas fa-cog"></i> Admin Panel
+      </a>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/js/app.js"></script>
+</body>
+</html>

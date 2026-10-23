@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="az" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Məqalə - Günün Nəbzi</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              600: '#e11d48',
+              700: '#be123c'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased selection:bg-rose-600 selection:text-white">
+
+  <!-- ================= TOP INFORMATION BAR ================= -->
+  <div class="bg-slate-900 text-slate-300 text-xs py-2 border-b border-slate-800 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-y-2">
+      <div class="flex items-center gap-3">
+        <span class="flex items-center gap-1.5 text-slate-300 font-medium">
+          <i class="far fa-calendar-alt text-rose-500"></i>
+          <span id="current-az-date">23 Oktyabr 2026</span>
+        </span>
+        <span class="text-slate-600 hidden sm:inline">|</span>
+        <span class="hidden sm:flex items-center gap-1 text-slate-400 font-mono">
+          <i class="far fa-clock text-rose-500"></i>
+          <span id="current-clock">12:00:00</span>
+        </span>
+      </div>
+
+      <div class="flex items-center gap-4 text-[11px]">
+        <div class="flex items-center gap-3">
+          <span>$ USD: <strong id="rate-usd" class="text-white">1.7000</strong></span>
+          <span>€ EUR: <strong id="rate-eur" class="text-white">1.8480</strong></span>
+          <span class="hidden sm:inline">Brent: <strong id="rate-brent" class="text-amber-400">$84.40</strong></span>
+        </div>
+        <span class="text-slate-700 hidden sm:inline">|</span>
+        <button id="theme-toggle-btn" class="p-1 rounded text-slate-400 hover:text-white transition-colors">
+          <i class="fas fa-moon dark:hidden text-amber-400"></i>
+          <i class="fas fa-sun hidden dark:inline text-amber-400"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= HEADER ================= -->
+  <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40 shadow-sm backdrop-blur-md bg-white/95 dark:bg-slate-900/95 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 to-rose-500 flex items-center justify-center text-white shadow-md shadow-rose-600/30 group-hover:scale-105 transition-transform">
+          <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <div>
+          <div class="text-2xl font-black tracking-tight text-slate-900 dark:text-white flex items-center">
+            GÜNÜN <span class="text-rose-600 ml-1.5">NƏBZİ</span>
+          </div>
+          <div class="text-[10px] uppercase font-bold tracking-widest text-slate-600 dark:text-slate-400">
+            24/7 Operativ Xəbər Portalı
+          </div>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-3">
+        <a href="/" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+          <i class="fas fa-arrow-left"></i>
+          <span>Bütün Xəbərlər</span>
+        </a>
+        <a href="/admin" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white dark:bg-rose-600 dark:hover:bg-rose-700 text-xs font-bold transition-all shadow-sm">
+          <i class="fas fa-cog"></i>
+          <span>Admin</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
+    
+    <!-- Breadcrumbs -->
+    <nav class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 mb-6 no-print">
+      <a href="/" class="hover:text-rose-600 transition-colors"><i class="fas fa-home mr-1"></i> Ana Səhifə</a>
+      <span><i class="fas fa-chevron-right text-[10px] text-slate-400"></i></span>
+      <a id="bc-category" href="/" class="hover:text-rose-600 transition-colors font-medium">Kateqoriya</a>
+      <span><i class="fas fa-chevron-right text-[10px] text-slate-400"></i></span>
+      <span id="bc-title" class="text-slate-600 dark:text-slate-300 truncate max-w-xs sm:max-w-md font-semibold">Xəbər</span>
+    </nav>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- ================= ARTICLE BODY (8 Cols) ================= -->
+      <article id="article-main-container" class="lg:col-span-8 bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-100 dark:border-slate-800 shadow-sm space-y-6">
+        
+        <!-- Header Meta & Badge -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
+          <div class="flex items-center gap-2">
+            <span id="article-category-badge" class="category-pill bg-rose-600 text-white">
+              Gündəm
+            </span>
+            <span id="article-date" class="text-xs text-slate-600 dark:text-slate-400 font-medium"></span>
+          </div>
+
+          <div class="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-400">
+            <span><i class="far fa-eye mr-1 text-rose-500"></i><span id="article-views">0</span></span>
+            <span>•</span>
+            <span><i class="far fa-clock mr-1 text-rose-500"></i><span id="article-read-time">3 dəqiqə</span></span>
+          </div>
+        </div>
+
+        <!-- Headline -->
+        <h1 id="article-title" class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight">
+          Xəbər başlığı yüklənir...
+        </h1>
+
+        <!-- Author Byline & Reading Toolbar -->
+        <div class="flex flex-wrap items-center justify-between gap-4 py-3 border-y border-slate-100 dark:border-slate-800 no-print">
+          <!-- Author info -->
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-rose-600 text-white flex items-center justify-center font-bold text-sm shadow">
+              <i class="fas fa-user-edit"></i>
+            </div>
+            <div>
+              <div id="article-author" class="text-xs font-bold text-slate-900 dark:text-slate-100">Redaksiya</div>
+              <div class="text-[11px] text-slate-600 dark:text-slate-400">Günün Nəbzi Xüsusi Müxbiri</div>
+            </div>
+          </div>
+
+          <!-- Reading Tools: Font size & Audio Player -->
+          <div class="flex items-center gap-2">
+            <!-- Audio reader button -->
+            <button id="btn-tts-listen" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:border-rose-500 transition-colors">
+              <i class="fas fa-volume-up text-rose-500"></i>
+              <span>Xəbəri Dinlə</span>
+            </button>
+
+            <!-- Font Sizer -->
+            <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg p-0.5 text-xs font-bold text-slate-700 dark:text-slate-300">
+              <button id="btn-font-dec" class="px-2 py-1 rounded hover:bg-white dark:hover:bg-slate-700 transition-colors" title="Şrifti kiçilt">A-</button>
+              <button id="btn-font-reset" class="px-2 py-1 rounded hover:bg-white dark:hover:bg-slate-700 transition-colors" title="İlkin şrift">A</button>
+              <button id="btn-font-inc" class="px-2 py-1 rounded hover:bg-white dark:hover:bg-slate-700 transition-colors" title="Şrifti böyüt">A+</button>
+            </div>
+
+            <!-- Print -->
+            <button id="btn-print" class="p-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-lg transition-colors" title="Çap et">
+              <i class="fas fa-print"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Featured Big Image -->
+        <div class="rounded-2xl overflow-hidden relative shadow-md max-h-[500px]">
+          <img id="article-image" src="" alt="" class="w-full h-full object-cover">
+        </div>
+
+        <!-- Lead Summary Box (Modern.az style editorial lead) -->
+        <div id="article-summary" class="p-4 sm:p-5 rounded-2xl bg-rose-50/70 dark:bg-rose-950/20 border-l-4 border-rose-600 text-slate-800 dark:text-slate-200 font-medium text-sm sm:text-base leading-relaxed">
+        </div>
+
+        <!-- Main Content Body -->
+        <div id="article-content-body" class="article-content text-slate-800 dark:text-slate-200 text-lg leading-relaxed pt-2">
+        </div>
+
+        <!-- Tags Cloud -->
+        <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center flex-wrap gap-2">
+          <span class="text-xs font-bold text-slate-600 dark:text-slate-400 mr-1"><i class="fas fa-tags"></i> Etiketlər:</span>
+          <div id="article-tags" class="flex flex-wrap gap-1.5"></div>
+        </div>
+
+        <!-- ================= SOCIAL SHARE BAR ================= -->
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 no-print">
+          <div class="text-xs font-bold text-slate-700 dark:text-slate-300">
+            <i class="fas fa-share-alt text-rose-500 mr-1"></i> Xəbəri Paylaş:
+          </div>
+          <div class="flex items-center gap-2">
+            <a id="share-whatsapp" href="#" target="_blank" class="w-9 h-9 rounded-xl bg-emerald-500 text-white flex items-center justify-center hover:opacity-90 transition-opacity" title="WhatsApp">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+            <a id="share-telegram" href="#" target="_blank" class="w-9 h-9 rounded-xl bg-sky-500 text-white flex items-center justify-center hover:opacity-90 transition-opacity" title="Telegram">
+              <i class="fab fa-telegram-plane"></i>
+            </a>
+            <a id="share-facebook" href="#" target="_blank" class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center hover:opacity-90 transition-opacity" title="Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a id="share-twitter" href="#" target="_blank" class="w-9 h-9 rounded-xl bg-black text-white flex items-center justify-center hover:opacity-90 transition-opacity" title="X (Twitter)">
+              <i class="fab fa-x-twitter"></i>
+            </a>
+            <button id="btn-copy-link" class="relative px-3 py-2 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold hover:bg-slate-300 transition-colors flex items-center gap-1.5">
+              <i class="far fa-copy"></i>
+              <span>Linki Kopyala</span>
+              <span id="copy-toast" class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] py-1 px-2 rounded opacity-0 pointer-events-none transition-opacity">Kopyalandı!</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ================= READER REACTIONS (EMOJI REACTION BAR) ================= -->
+        <div class="py-6 border-y border-slate-100 dark:border-slate-800 text-center space-y-3 no-print">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
+            Bu xəbərə münasibətiniz:
+          </h4>
+          <div class="flex items-center justify-center gap-4 sm:gap-6 flex-wrap">
+            
+            <button onclick="sendReaction('like')" class="reaction-btn flex flex-col items-center p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+              <span class="text-2xl sm:text-3xl">👍</span>
+              <span class="text-[11px] font-bold text-slate-700 dark:text-slate-300 mt-1">Maraqlıdır</span>
+              <span id="reaction-count-like" class="text-[10px] text-rose-600 font-bold">0</span>
+            </button>
+
+            <button onclick="sendReaction('heart')" class="reaction-btn flex flex-col items-center p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+              <span class="text-2xl sm:text-3xl">❤️</span>
+              <span class="text-[11px] font-bold text-slate-700 dark:text-slate-300 mt-1">Əla</span>
+              <span id="reaction-count-heart" class="text-[10px] text-rose-600 font-bold">0</span>
+            </button>
+
+            <button onclick="sendReaction('wow')" class="reaction-btn flex flex-col items-center p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+              <span class="text-2xl sm:text-3xl">😮</span>
+              <span class="text-[11px] font-bold text-slate-700 dark:text-slate-300 mt-1">Təəccüblü</span>
+              <span id="reaction-count-wow" class="text-[10px] text-rose-600 font-bold">0</span>
+            </button>
+
+            <button onclick="sendReaction('sad')" class="reaction-btn flex flex-col items-center p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+              <span class="text-2xl sm:text-3xl">😢</span>
+              <span class="text-[11px] font-bold text-slate-700 dark:text-slate-300 mt-1">Kədərli</span>
+              <span id="reaction-count-sad" class="text-[10px] text-rose-600 font-bold">0</span>
+            </button>
+
+            <button onclick="sendReaction('angry')" class="reaction-btn flex flex-col items-center p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+              <span class="text-2xl sm:text-3xl">😡</span>
+              <span class="text-[11px] font-bold text-slate-700 dark:text-slate-300 mt-1">Qəzəbli</span>
+              <span id="reaction-count-angry" class="text-[10px] text-rose-600 font-bold">0</span>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- ================= OXŞAR XƏBƏRLƏR (RELATED NEWS) ================= -->
+        <div class="pt-6 space-y-4 no-print">
+          <div class="flex items-center gap-2 pb-2 border-b-2 border-slate-100 dark:border-slate-800">
+            <span class="w-2 h-5 bg-rose-600 rounded-sm"></span>
+            <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Oxşar Xəbərlər</h3>
+          </div>
+          <div id="related-news-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- ================= COMMENTS SECTION ================= -->
+        <div class="pt-8 space-y-6 no-print">
+          <div class="flex items-center justify-between pb-2 border-b-2 border-slate-100 dark:border-slate-800">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-5 bg-rose-600 rounded-sm"></span>
+              <h3 class="text-base font-extrabold text-slate-900 dark:text-white">
+                Oxucu Şərhləri <span id="comments-count" class="text-rose-600 text-sm font-bold">(0)</span>
+              </h3>
+            </div>
+            <span class="text-xs text-slate-600 dark:text-slate-400">Etik qaydalara riayət edin</span>
+          </div>
+
+          <!-- Comment submission alert -->
+          <div id="comment-success-alert" class="hidden p-3 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold flex items-center gap-2">
+            <i class="fas fa-check-circle"></i> Şərhiniz qəbul edildi və dərc olundu!
+          </div>
+
+          <!-- Add Comment Form -->
+          <form id="comment-form" class="space-y-3 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Adınız və Soyadınız:</label>
+              <input type="text" id="comment-author" required placeholder="məs: İlqar Əliyev" class="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs focus:ring-2 focus:ring-rose-500 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Rəyiniz:</label>
+              <textarea id="comment-content" required rows="3" placeholder="Fikirlərinizi qeyd edin..." class="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs focus:ring-2 focus:ring-rose-500 focus:outline-none"></textarea>
+            </div>
+            <div class="text-right">
+              <button type="submit" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow-md transition-all">
+                <i class="fas fa-paper-plane mr-1.5"></i> Şərh Yaz
+              </button>
+            </div>
+          </form>
+
+          <!-- Comments List -->
+          <div id="comments-list" class="space-y-3">
+            <!-- Dynamically populated -->
+          </div>
+
+        </div>
+
+      </article>
+
+      <!-- ================= SIDEBAR (4 Cols) ================= -->
+      <aside class="lg:col-span-4 space-y-6 no-print">
+        
+        <!-- Most Read -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-100 dark:border-slate-800 shadow-sm">
+          <div class="flex items-center justify-between pb-2 mb-4 border-b border-slate-100 dark:border-slate-800">
+            <h4 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-1.5">
+              <i class="fas fa-fire text-rose-500"></i> Ən Çox Oxunanlar
+            </h4>
+          </div>
+          <ul id="sidebar-most-read" class="space-y-3">
+            <!-- Populated dynamically -->
+          </ul>
+        </div>
+
+        <!-- Poll Widget -->
+        <div id="sidebar-poll-container"></div>
+
+        <!-- Back to Home banner -->
+        <div class="p-5 rounded-2xl bg-gradient-to-tr from-slate-900 to-slate-800 text-white text-center shadow-lg">
+          <i class="fas fa-newspaper text-3xl text-rose-500 mb-2"></i>
+          <h4 class="text-sm font-bold mb-1">Daha çox xəbər oxumaq istəyirsiniz?</h4>
+          <p class="text-[11px] text-slate-400 mb-3">Bütün kateqoriyalardan operativ xəbərlər ana səhifəmizdədir.</p>
+          <a href="/" class="inline-block px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-colors shadow">
+            Ana Səhifəyə Keç
+          </a>
+        </div>
+
+      </aside>
+
+    </div>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-900 text-slate-400 text-xs mt-12 border-t border-slate-800 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-slate-500">
+      © 2026 "Günün Nəbzi" Xəbər Portalı. Bütün hüquqlar qorunur.
+    </div>
+  </footer>
+
+  <script src="/js/article.js"></script>
+</body>
+</html>

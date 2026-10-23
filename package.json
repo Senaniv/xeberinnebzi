@@ -1,0 +1,27 @@
+{
+  "name": "gunun-nebzi-news-portal",
+  "version": "1.0.0",
+  "description": "Günün Nəbzi - Modern Azərbaycan Xəbər Portalı və İdarəetmə Paneli",
+  "main": "server/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js"
+  },
+  "keywords": [
+    "news",
+    "portal",
+    "azerbaijan",
+    "oxu-az",
+    "modern-az",
+    "admin-panel"
+  ],
+  "author": "Günün Nəbzi Komandası",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "multer": "^2.5.0"
+  }
+}
